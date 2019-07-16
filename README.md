@@ -1,1 +1,1 @@
-# Java_bank_jdbc
+# Projeto Java em JDBC com BD em SQL
