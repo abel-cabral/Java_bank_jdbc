@@ -49,21 +49,32 @@ public class SellerDaoJDBC implements SellerDao {
 			rs = st.executeQuery();
 			// rs inicia no 0 da tabela, precisamos antes de avançar testar se nao é null
 			if (rs.next()) {
-				Department dep = new Department(rs.getInt("DepartmentId"), rs.getString("DepName"));
-				Seller sel = new Seller(rs.getInt("Id"), rs.getString("Name"), rs.getString("Email"),
-						rs.getDate("BirthDate"), rs.getDouble("BaseSalary"), dep);
+				Department dep = instantiateDepartment(rs);
+				Seller sel = instantiateSeller(rs, dep);
 				return sel;
 			}
 			return null;
 
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
 
+	}
+	
+	// Ao inves de montar manualmente em cada funcao, reutilizamos;
+	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
+		Seller sel = new Seller(rs.getInt("Id"), rs.getString("Name"), rs.getString("Email"), rs.getDate("BirthDate"),
+				rs.getDouble("BaseSalary"), dep);
+		return sel;
+	}
+
+	// Ao inves de montar manualmente em cada funcao, reutilizamos;
+	private Department instantiateDepartment(ResultSet rs) throws SQLException {
+		Department dep = new Department(rs.getInt("DepartmentId"), rs.getString("DepName"));
+		return dep;
 	}
 
 	@Override
