@@ -34,8 +34,13 @@ public class Program {
 		
 		System.out.println("=============TEST 4: seller insert==============");
 		Seller novo = new Seller(null, "Miguel de Freitas Reis", "miguelitosp@id.uff.br", sdf.parse("26/06/2019"), 2800.00, new Department(3, null));		
-		sellerDao.insert(novo);
-		System.out.println("Foi inserido no ID: " + novo.getId());
+		//sellerDao.insert(novo);
+		//System.out.println("Foi inserido no ID: " + novo.getId());
+		
+		System.out.println("=============TEST 5: seller update==============");
+		novo = new Seller(13, "Ramones de Paula", "ramonPacheco.uff.br", sdf.parse("25/01/1976"), 5800.00, new Department(3, null));		
+		sellerDao.update(novo);
+		System.out.println("Alterado");
 	}
 
 }
