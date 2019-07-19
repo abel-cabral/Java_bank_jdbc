@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
@@ -36,7 +37,8 @@ public class SellerDaoJDBC implements SellerDao {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	// Retorna dos dados de um funcionario
 	@Override
 	public Seller findById(Integer id) {
 		PreparedStatement st = null;
@@ -63,7 +65,7 @@ public class SellerDaoJDBC implements SellerDao {
 		}
 
 	}
-	
+
 	// Ao inves de montar manualmente em cada funcao, reutilizamos;
 	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
 		Seller sel = new Seller(rs.getInt("Id"), rs.getString("Name"), rs.getString("Email"), rs.getDate("BirthDate"),
@@ -81,6 +83,38 @@ public class SellerDaoJDBC implements SellerDao {
 	public List<Seller> findAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	// Retorna uma lista contendo todos funcionarios associados a um determinado setor
+	@Override
+	public List<Seller> findByDepartment(Integer id) {
+		PreparedStatement st = null; 
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT seller.*,department.Name as DepName FROM seller INNER JOIN department\n"
+					+ "ON seller.DepartmentId = department.Id WHERE DepartmentId = ?\n" + "ORDER BY Name");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			
+			if(rs.next()) {
+				Department dep = instantiateDepartment(rs);
+				List<Seller> seller = new ArrayList<Seller>();
+				do {
+					Seller aux = instantiateSeller(rs, dep);
+					seller.add(aux);
+				}
+				while (rs.next());
+				return seller;
+			}
+			return null;
+			
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}		
 	}
 
 }
