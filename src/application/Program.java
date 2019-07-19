@@ -39,8 +39,13 @@ public class Program {
 		
 		System.out.println("=============TEST 5: seller update==============");
 		novo = new Seller(13, "Ramones de Paula", "ramonPacheco.uff.br", sdf.parse("25/01/1976"), 5800.00, new Department(3, null));		
-		sellerDao.update(novo);
-		System.out.println("Alterado");
+		//sellerDao.update(novo);
+		//System.out.println("Alterado");
+		
+		System.out.println("=============TEST 5: seller delete==============");
+		sellerDao.deleteById(8);
+		sellerDao.deleteById(12);
+		System.out.println("Sucesso ao deletar entradas");
 	}
 
 }
