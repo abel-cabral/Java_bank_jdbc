@@ -43,8 +43,7 @@ public class Program {
 		//System.out.println("Alterado");
 		
 		System.out.println("=============TEST 5: seller delete==============");
-		sellerDao.deleteById(8);
-		sellerDao.deleteById(12);
+		sellerDao.deleteById(8);		
 		System.out.println("Sucesso ao deletar entradas");
 	}
 
